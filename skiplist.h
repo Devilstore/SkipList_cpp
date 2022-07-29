@@ -18,7 +18,7 @@
 #define MAX_LEVEL 32
 #define S_FILE "./store/dataFile"
 
-#define P_FACTOR 0.4
+#define P_FACTOR 0.25
 
 // 用于生成 随机层数
 std::mt19937 gen(std::random_device{}());
