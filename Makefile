@@ -6,13 +6,13 @@ CXX = g++
 CXXFLAGS = -w -pthread -std=c++11
 TARGET := test
 
-OBJDIR := bin
+OBJDIR := ./bin
 
-# 创建 bin 目录
-mkdir_shell = $(shell if [ ! -d $(OBJDIR) ]; then mkdir -p $(OBJDIR); fi)
-
-test : main.o
+test : $(OBJDIR) main.o clean
 	$(CXX) main.o  $(CXXFLAGS) -o ./bin/skiplist
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
 run:
 	./bin/skiplist
