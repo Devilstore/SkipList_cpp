@@ -91,14 +91,15 @@ private:
     ~SkipList();                         // 析构函数
 
 public:
-    int insert(K, V); // 按 key 有序添加元素  0：插入成功。 1：元素已存在
-    void show();      // 显示当前 跳表
-    bool find(K);     // 查找 key
-    bool erase(K);    // 删除元素
-    bool storeFile(); // 存储 data 到文件
-    bool loadFile();  // 加载 data 到内存
-    int size();       // 获取当前 数据 条数
-    void init();      // 初始化函数： 加载 数据
+    void show();       // 显示当前 跳表
+    int insert(K, V);  // 按 key 有序添加元素  0：插入成功。 1：元素已存在
+    bool find(K);      // 查找 key
+    bool erase(K);     // 删除元素
+    bool revise(K, V); // 修改K 值 V
+    bool storeFile();  // 存储 data 到文件
+    bool loadFile();   // 加载 data 到内存
+    int size();        // 获取当前 数据 条数
+    void init();       // 初始化函数： 加载 数据
 
 private:
     bool getInfo(const std::string &str, std::string *key, std::string *value); // 从 str 中 提取 key-value
@@ -307,6 +308,33 @@ bool SkipList<K, V>::erase(K _key)
     --m_size;
     m_mutex.unlock();
     return true; // 成功删除
+}
+
+// 修改 K 对应的值 V
+template <typename K, typename V>
+bool SkipList<K, V>::revise(K _key, V _val)
+{
+    m_mutex.lock();
+    SkipListNode<K, V> *cur = m_head;
+    for (int i = m_level - 1; i >= 0; --i)
+    {
+        while (cur->forward[i] != m_tail && cur->forward[i]->getKey() < _key)
+        {
+            cur = cur->forward[i];
+        }
+    }
+    cur = cur->forward[0]; //找到的节点位置
+
+    // 如果找到的节点 为 尾结点， 或者 key 不等于 _key，说明不存在该节点
+    if (cur == m_tail || cur->getKey() != _key)
+    {
+        m_mutex.unlock();
+        return false; // 未找到节点
+    }
+
+    cur->setValue(_val); // 修改值
+    m_mutex.unlock();
+    return true; // 找到节点
 }
 
 // 保存 跳表到文件

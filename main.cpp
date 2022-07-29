@@ -25,6 +25,11 @@ int main()
     std::cout << "skiplist size : " << skiplist->size() << std::endl;
     skiplist->show();
 
+    skiplist->revise(2, "iiiiiiiiiiiiii");
+
+    std::cout << "skiplist size : " << skiplist->size() << std::endl;
+    skiplist->show();
+
     skiplist->storeFile();
 
     return 0;
