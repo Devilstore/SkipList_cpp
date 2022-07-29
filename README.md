@@ -8,6 +8,7 @@
 
 - insert 插入数据
 - erase 删除数据
+- revise 修改数据
 - find 查找数据
 - show 显示当前跳表数据
 - storeFile 数据存档
